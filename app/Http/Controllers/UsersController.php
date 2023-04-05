@@ -112,7 +112,7 @@ class UsersController extends Controller
 
     public function verifyUser ($id) {
         $user = User::findOrFail($id);
-        Mail::send('emails.verify.blade.php', array (
+        Mail::send('emails.verify', array (
         ), function($message) use ($user) {
             $message->to($user->email);
             $message->subject('Verified Details');

@@ -77,7 +77,7 @@ class AuthController extends Controller
             'address' => $request->address
         ]);
 
-        Mail::send('emails.register.blade.php', array (
+        Mail::send('emails.register', array (
         ), function($message) use ($user) {
             $message->to('admin_email');
             $message->subject('New Student Register');
