@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UsersController extends Controller
 {
@@ -13,7 +14,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::latest()->paginate(5);
+    
+        return view('users.index',compact('users'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -34,7 +38,15 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+    
+        User::create($request->all());
+     
+        return redirect()->route('user.index')
+                        ->with('success','User created successfully.');
     }
 
     /**
@@ -56,7 +68,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('users.edit',compact('user'));
     }
 
     /**
@@ -68,7 +81,16 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+    
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+    
+        return redirect()->route('users.index')
+            ->with('success','User updated successfully');
     }
 
     /**
