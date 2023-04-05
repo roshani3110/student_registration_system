@@ -115,6 +115,7 @@ class UsersController extends Controller
         Mail::send('emails.verify', array (
         ), function($message) use ($user) {
             $message->to($user->email);
+            $message->from('r@gmail.com');
             $message->subject('Verified Details');
         });  
     }

@@ -47,7 +47,7 @@ class AuthController extends Controller
    
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard')
+            return redirect()->to('/users')
                         ->withSuccess('You have Successfully loggedin');
         }
   
@@ -66,24 +66,24 @@ class AuthController extends Controller
             'email' => 'required'
         ]);
         $img_name = 'img_'.time().'.'.$request->photo->getClientOriginalExtension();
-        $request->photo->move(storage_path('img/'), $img_name);
-        $imagePath = 'img/'.$img_name; 
+        $path = $request->file('photo')->storeAs('public/photo',$img_name);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->name),
             'dob' => $request->dob,
-            'photo' => $imagePath,
+            'photo' => $path,
             'address' => $request->address
         ]);
 
         Mail::send('emails.register', array (
         ), function($message) use ($user) {
-            $message->to('admin_email');
+            $message->to('admin@admin.com');
+            $message->from('r@gmail.com');
             $message->subject('New Student Register');
         });
 
-        // return redirect("dashboard")->withSuccess('Great! You have Successfully loggedin');
+        return redirect("dashboard")->withSuccess('Great! You have register Successfully');
     }
     
     /**
