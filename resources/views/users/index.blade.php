@@ -20,6 +20,8 @@
             <th>No</th>
             <th>Name</th>
             <th>Email</th>
+            <th>DOB</th>
+            <th>Address</th>
             <th width="280px">Action</th>
         </tr>
         @foreach ($users as $user)
@@ -27,11 +29,12 @@
             <td>{{ ++$i }}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
+            <td>{{ $user->dob }}</td>
+            <td>{{ $user->address }}</td>
             <td>
-                <form action="{{ route('users.destroy',$user->id) }}" method="POST">
-                    <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
-                    @csrf
-                </form>
+                <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
+                <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>  
+                <a class="btn btn-success" href="{{ route('users.verify',$user->id) }}">Verify</a>
             </td>
         </tr>
         @endforeach

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -14,10 +17,12 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate(5);
+        $users = User::latest()->paginate();
+        // $is_admin = Auth::user();
+        // Log::info($is_admin);
     
         return view('users.index',compact('users'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+            ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -57,7 +62,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('users.show',compact('user'));
     }
 
     /**
@@ -102,5 +108,14 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function verifyUser ($id) {
+        $user = User::findOrFail($id);
+        Mail::send('emails.verify.blade.php', array (
+        ), function($message) use ($user) {
+            $message->to($user->email);
+            $message->subject('Verified Details');
+        });  
     }
 }

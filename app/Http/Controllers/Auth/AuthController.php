@@ -9,6 +9,7 @@ use Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -61,7 +62,8 @@ class AuthController extends Controller
     public function postRegistration(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'email' => 'required'
         ]);
         $img_name = 'img_'.time().'.'.$request->photo->getClientOriginalExtension();
         $request->photo->move(storage_path('img/'), $img_name);
@@ -75,7 +77,13 @@ class AuthController extends Controller
             'address' => $request->address
         ]);
 
-        return redirect("dashboard")->withSuccess('Great! You have Successfully loggedin');
+        Mail::send('emails.register.blade.php', array (
+        ), function($message) use ($user) {
+            $message->to('admin_email');
+            $message->subject('New Student Register');
+        });
+
+        // return redirect("dashboard")->withSuccess('Great! You have Successfully loggedin');
     }
     
     /**
