@@ -61,15 +61,18 @@ class AuthController extends Controller
      */
     public function postRegistration(Request $request)
     {  
+        Log::info($request);
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'name' => 'required'
         ]);
-           
-        $data = $request->all();
-        $check = $this->create($data);
-         
+        $image_path = $request->file('photo')->store('photo', 'public');
+        $user = User::create([
+            'name' => $request->name,
+            'dob' => $request->dob,
+            'photo' => $image_path,
+            'address' => $request->address
+        ]);
+
         return redirect("dashboard")->withSuccess('Great! You have Successfully loggedin');
     }
     
@@ -86,21 +89,7 @@ class AuthController extends Controller
   
         return redirect("login")->withSuccess('Opps! You do not have access');
     }
-    
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
-    public function create(array $data)
-    {
-      return User::create([
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'password' => Hash::make($data['password'])
-      ]);
-    }
-    
+
     /**
      * Write code on Method
      *
