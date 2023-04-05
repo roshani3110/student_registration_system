@@ -17,11 +17,15 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate();
-        // $is_admin = Auth::user();
-        // Log::info($is_admin);
+        $is_admin = false;
+        if (Auth::user()->is_admin) {
+            $is_admin = true;
+            $users = User::latest()->paginate();
+        } else {
+            $users = User::where('email', Auth::user()->email)->latest()->paginate();
+        }
     
-        return view('users.index',compact('users'))
+        return view('users.index',compact('users', 'is_admin'))
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 

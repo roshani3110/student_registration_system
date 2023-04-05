@@ -33,8 +33,10 @@
             <td>{{ $user->address }}</td>
             <td>
                 <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
-                <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>  
-                <a class="btn btn-success" href="{{ route('users.verify',$user->id) }}">Verify</a>
+                @if($is_admin)
+                    <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>  
+                    <a class="btn btn-success" href="{{ route('users.verify',$user->id) }}">Verify</a>
+                @endif
             </td>
         </tr>
         @endforeach
