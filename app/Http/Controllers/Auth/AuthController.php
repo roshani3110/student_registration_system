@@ -40,18 +40,23 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-   
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            return redirect()->to('/users')
-                        ->withSuccess('You have Successfully loggedin');
+        $user = User::where('email', $request->email)->first();
+        if ($user->is_admin || $user->verified_by_admin) {
+            $request->validate([
+                'email' => 'required',
+                'password' => 'required',
+            ]);
+       
+            $credentials = $request->only('email', 'password');
+            if (Auth::attempt($credentials)) {
+                return redirect()->to('/users')
+                            ->withSuccess('You have Successfully loggedin');
+            }
+
+            return redirect("login")->withSuccess('Oppes! You have entered invalid credentials');
+        } else {
+            return redirect("login")->withError('Admin will verify your details soon, after that you are able to login');
         }
-  
-        return redirect("login")->withSuccess('Oppes! You have entered invalid credentials');
     }
       
     /**

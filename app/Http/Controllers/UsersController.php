@@ -112,11 +112,14 @@ class UsersController extends Controller
 
     public function verifyUser ($id) {
         $user = User::findOrFail($id);
+        $user->verified_by_admin = true;
+        $user->save();
         Mail::send('emails.verify', array (
         ), function($message) use ($user) {
             $message->to($user->email);
             $message->from('r@gmail.com');
             $message->subject('Verified Details');
-        });  
+        });
+        return redirect()->route('users.index');
     }
 }
