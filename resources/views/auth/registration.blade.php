@@ -9,7 +9,7 @@
                     <div class="card-header">Register</div>
                     <div class="card-body">
     
-                        <form action="{{ route('register.post') }}" method="POST">
+                        <form action="{{ route('register.post') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
@@ -17,6 +17,16 @@
                                     <input type="text" id="name" class="form-control" name="name" required autofocus>
                                     @if ($errors->has('name'))
                                         <span class="text-danger">{{ $errors->first('name') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
+                                <div class="col-md-6">
+                                    <input type="email" id="email" class="form-control" name="email" required autofocus>
+                                    @if ($errors->has('email'))
+                                        <span class="text-danger">{{ $errors->first('email') }}</span>
                                     @endif
                                 </div>
                             </div>

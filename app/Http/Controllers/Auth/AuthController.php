@@ -60,16 +60,19 @@ class AuthController extends Controller
      * @return response()
      */
     public function postRegistration(Request $request)
-    {  
-        Log::info($request);
+    {
         $request->validate([
             'name' => 'required'
         ]);
-        $image_path = $request->file('photo')->store('photo', 'public');
+        $img_name = 'img_'.time().'.'.$request->photo->getClientOriginalExtension();
+        $request->photo->move(storage_path('img/'), $img_name);
+        $imagePath = 'img/'.$img_name; 
         $user = User::create([
             'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->name),
             'dob' => $request->dob,
-            'photo' => $image_path,
+            'photo' => $imagePath,
             'address' => $request->address
         ]);
 
