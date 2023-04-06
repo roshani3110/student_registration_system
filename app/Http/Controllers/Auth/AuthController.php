@@ -40,15 +40,20 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
+        Log::info($request);
         $user = User::where('email', $request->email)->first();
+        Log::info($user);
         if ($user->is_admin || $user->verified_by_admin) {
+            Log::info('if');
             $request->validate([
                 'email' => 'required',
                 'password' => 'required',
             ]);
        
             $credentials = $request->only('email', 'password');
+            Log::info($credentials);
             if (Auth::attempt($credentials)) {
+                Log::info('auth apptempt');
                 return redirect()->to('/users')
                             ->withSuccess('You have Successfully loggedin');
             }
