@@ -34,8 +34,10 @@
             <td>
                 <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
                 @if($is_admin)
-                    <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>  
-                    <a class="btn btn-success" href="{{ route('users.verify',$user->id) }}">Verify</a>
+                    <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
+                    @if(!$user->verified_by_admin)
+                        <a class="btn btn-success" href="{{ route('users.verify',$user->id) }}">Verify</a>
+                    @endif
                 @endif
             </td>
         </tr>

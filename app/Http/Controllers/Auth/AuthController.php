@@ -77,7 +77,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->name),
             'dob' => $request->dob,
-            'photo' => $path,
+            'photo' => $img_name,
             'address' => $request->address
         ]);
 

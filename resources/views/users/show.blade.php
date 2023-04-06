@@ -33,6 +33,12 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
+                <strong>Email:</strong>
+                <img src="{{ url('storage/photo/'.$user->photo) }}" alt="photo" title="photo"/>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
                 <strong>Address:</strong>
                 {{ $user->address }}
             </div>

@@ -44,7 +44,7 @@
                             <div class="form-group row">
                                 <label for="photo" class="col-md-4 col-form-label text-md-right">Photo</label>
                                 <div class="col-md-6">
-                                    <input type="file" id="photo" class="form-control" name="photo" required>
+                                    <input type="file" id="photo" class="form-control" name="photo" required accept="image/*">
                                     @if ($errors->has('photo'))
                                         <span class="text-danger">{{ $errors->first('photo') }}</span>
                                     @endif
